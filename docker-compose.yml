@@ -1,0 +1,31 @@
+services:
+  backend_rust:
+    build:
+      context: ./backend/rust
+      dockerfile: Dockerfile
+    ports:
+      - "6001:6001"
+    environment:
+      - PORT=6001
+      - RUST_LOG=info
+    restart: unless-stopped
+
+  backend_go:
+    build:
+      context: ./backend/go
+      dockerfile: Dockerfile
+    ports:
+      - "6002:6002"
+    environment:
+      - PORT=6002
+    restart: unless-stopped
+
+  frontend_waku:
+    build:
+      context: ./frontend/waku
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    restart: unless-stopped
