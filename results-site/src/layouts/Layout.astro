@@ -1,0 +1,118 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <style is:global>
+      :root {
+        --bg: #f8f9fa;
+        --text: #1a1a1a;
+        --muted: #5a5a5a;
+        --border: #dee2e6;
+        --card-bg: #fff;
+        --error: #c00;
+        --link: #0d6efd;
+      }
+      html.dark {
+        --bg: #1a1a1a;
+        --text: #e8e8e8;
+        --muted: #a0a0a0;
+        --border: #3a3a3a;
+        --card-bg: #252525;
+        --error: #f66;
+        --link: #6ea8fe;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      .theme-toggle {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.875rem;
+        background: var(--bg);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .theme-toggle:hover {
+        opacity: 0.9;
+      }
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--link);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>{title}</h1>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Dark</button>
+    </header>
+    <slot />
+    <script>
+      (function () {
+        const STORAGE_KEY = "theme";
+        const toggle = document.getElementById("theme-toggle");
+        if (!toggle) return;
+
+        /** @param {boolean} dark */
+        function setTheme(dark: boolean) {
+          document.documentElement.classList.toggle("dark", dark);
+          if (toggle) {
+            toggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+            toggle.textContent = dark ? "Light" : "Dark";
+          }
+        }
+
+        function init() {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored === "dark" || stored === "light") {
+            setTheme(stored === "dark");
+          } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            setTheme(true);
+          } else {
+            setTheme(false);
+          }
+        }
+
+        toggle.addEventListener("click", () => {
+          const isDark = document.documentElement.classList.contains("dark");
+          const next = !isDark;
+          setTheme(next);
+          localStorage.setItem(STORAGE_KEY, next ? "dark" : "light");
+        });
+
+        init();
+      })();
+    </script>
+  </body>
+</html>

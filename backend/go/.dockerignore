@@ -1,0 +1,6 @@
+hanoi-bench
+.env
+.env.*
+.git/
+*.md
+!README.md

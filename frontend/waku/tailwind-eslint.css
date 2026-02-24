@@ -1,0 +1,3 @@
+/* Used by eslint-plugin-tailwindcss to resolve Tailwind v4 config. */
+@import "tailwindcss";
+@source "./src/**/*.{ts,tsx}";

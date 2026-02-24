@@ -1,0 +1,19 @@
+{
+  "runAt": "2026-02-24T00:00:00.000Z",
+  "frontend": "waku",
+  "frontendVersion": "0.1.0",
+  "results": [
+    { "scenario": "table-n5", "backend": "rust", "frontend": "waku", "metrics": { "timeToStreamCompleteMs": 150 } },
+    { "scenario": "table-n5", "backend": "go", "frontend": "waku", "metrics": { "timeToStreamCompleteMs": 155 } }
+  ],
+  "stats": {
+    "table-n5": {
+      "rust": {
+        "timeToStreamCompleteMs": { "mean": 150, "min": 148, "max": 152, "sampleCount": 2 }
+      },
+      "go": {
+        "timeToStreamCompleteMs": { "mean": 155, "min": 154, "max": 156, "sampleCount": 2 }
+      }
+    }
+  }
+}

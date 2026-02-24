@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.waku/
+.env
+.env.*
+!.env.example
+e2e/results/

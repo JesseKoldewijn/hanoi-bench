@@ -1,0 +1,15 @@
+[package]
+name = "hanoi-bench"
+version = "0.1.0"
+edition = "2021"
+description = "Tower of Hanoi streaming API benchmark backend"
+
+[dependencies]
+axum = { version = "0.8", features = ["json"] }
+axum-streams = { version = "0.24", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+tokio-stream = "0.1"
+tower-http = { version = "0.5", features = ["cors"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

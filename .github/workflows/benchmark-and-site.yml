@@ -1,0 +1,93 @@
+name: Benchmark and build results site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Skip Docker, benchmark; use sample results (for act or quick validation)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  benchmark-and-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Volta
+        uses: volta-cli/action@v4
+        with:
+          package-json-path: frontend/waku/package.json
+
+      - name: Start stack
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          docker compose up -d
+          echo "Waiting for services..."
+          for i in $(seq 1 45); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/ 2>/dev/null || true)
+            [ "$code" = "200" ] && break
+            [ $i -eq 45 ] && echo "Frontend (3000) not ready" && exit 1
+            sleep 2
+          done
+          for port in 6001 6002; do
+            for i in $(seq 1 30); do
+              code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:$port/hanoi?n=1" 2>/dev/null || true)
+              [ "$code" = "200" ] && break
+              [ $i -eq 30 ] && echo "Backend $port not ready" && exit 1
+              sleep 2
+            done
+          done
+          sleep 3
+
+      - name: Install Waku frontend deps
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        working-directory: frontend/waku
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        working-directory: frontend/waku
+        run: npx playwright install chromium --with-deps
+
+      - name: Run benchmark
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        working-directory: frontend/waku
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+        run: yarn test:e2e:benchmark
+
+      - name: Copy results to results site
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          cp frontend/waku/e2e/results/results.json results-site/public/benchmark-results.json
+
+      - name: Commit and push benchmark results
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results-site/public/benchmark-results.json
+          git diff --staged --quiet || git commit -m "chore(ci): update benchmark results"
+          git push
+
+      - name: Install results-site deps
+        working-directory: results-site
+        run: npm ci
+
+      - name: Build results site
+        working-directory: results-site
+        run: npm run build
+
+      - name: Upload site artifact
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-site-dist
+          path: results-site/dist
