@@ -167,7 +167,7 @@ export function buildTableForMetric(
       const relative = best > 0 ? Math.round((c.mean / best) * 100) / 100 : 1;
       c.relative = relative;
       const spreadStr = c.spread > 0 ? ` ± ${formatNum(c.spread)}` : "";
-      c.label = `${formatNum(c.mean)}${spreadStr} (${relative.toFixed(2)})`;
+      c.label = `${formatNum(c.mean)}${spreadStr} (${relative.toFixed(2)}×)`;
     }
   }
   return { scenarioIds, rows };
@@ -204,10 +204,16 @@ export function getScenariosFromStats(stats: Record<string, unknown>): string[] 
 
 export type ViewType = "animate" | "table";
 
-/** Filter scenarios by view type (animate-* vs table-*) */
+/** Filter scenarios by view type (animate-* vs table-*), sorted by numeric n */
 export function filterScenariosByView(scenarios: string[], view: ViewType): string[] {
   const prefix = view === "animate" ? "animate-" : "table-";
-  return scenarios.filter((s) => s.startsWith(prefix)).sort();
+  return scenarios
+    .filter((s) => s.startsWith(prefix))
+    .sort((a, b) => {
+      const na = parseInt(a.match(/n(\d+)/)?.[1] ?? "0", 10);
+      const nb = parseInt(b.match(/n(\d+)/)?.[1] ?? "0", 10);
+      return na - nb;
+    });
 }
 
 /** Human-readable scenario label (e.g. animate-n3 → n=3) */

@@ -30,7 +30,7 @@ export default function BenchResultsTable({ scenarioIds, rows, metricKey, scenar
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("mean", {
-      header: "mean",
+      header: "Avg",
       cell: (info) => {
         const v = info.getValue();
         return Number.isInteger(v) ? String(v) : v.toFixed(2);
@@ -69,6 +69,7 @@ export default function BenchResultsTable({ scenarioIds, rows, metricKey, scenar
                 <th
                   key={h.id}
                   scope="col"
+                  title={h.id === "mean" ? "Average across all scenarios" : undefined}
                   className={h.column.getCanSort() ? "sortable" : ""}
                   onClick={h.column.getToggleSortingHandler()}
                   style={{ textAlign: h.id === "mean" || scenarioIds.includes(h.id) ? "right" : "left" }}

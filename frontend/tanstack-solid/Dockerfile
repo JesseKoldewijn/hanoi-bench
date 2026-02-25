@@ -1,21 +1,28 @@
-# Build stage
-FROM node:22-bookworm-slim AS builder
+# Build stage: Volta for Node/Yarn version pinning (matches Waku)
+FROM debian:bookworm-slim AS builder
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
+    curl \
     libatomic1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY package.json package-lock.json* ./
-RUN npm ci
+ENV VOLTA_HOME=/root/.volta
+ENV PATH=$VOLTA_HOME/bin:$PATH
+RUN curl https://get.volta.sh | bash \
+    && volta install node yarn
+
+COPY package.json .yarnrc.yml yarn.lock ./
+COPY .yarn .yarn/
+RUN yarn install --immutable
 
 COPY . .
 ARG VITE_BACKEND_RUST=http://localhost:6001
 ARG VITE_BACKEND_GO=http://localhost:6002
 ENV VITE_BACKEND_RUST=$VITE_BACKEND_RUST
 ENV VITE_BACKEND_GO=$VITE_BACKEND_GO
-RUN npm run build
+RUN yarn run build
 
 # Runtime stage
 FROM node:22-bookworm-slim

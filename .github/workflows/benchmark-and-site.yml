@@ -25,6 +25,10 @@ jobs:
         with:
           package-json-path: frontend/waku/package.json
 
+      - name: Install Node and Yarn
+        working-directory: frontend/waku
+        run: volta install node yarn
+
       - name: Start stack
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
@@ -51,7 +55,7 @@ jobs:
       - name: Install Waku frontend deps
         if: ${{ github.event.inputs.dry_run != 'true' }}
         working-directory: frontend/waku
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Install Playwright browsers
         if: ${{ github.event.inputs.dry_run != 'true' }}
@@ -73,11 +77,11 @@ jobs:
 
       - name: Install results-site deps
         working-directory: results-site
-        run: npm ci
+        run: yarn install --immutable
 
       - name: Build results site
         working-directory: results-site
-        run: npm run build
+        run: yarn run build
 
       - name: Upload site artifact
         if: ${{ github.event.inputs.dry_run != 'true' }}

@@ -66,26 +66,34 @@ const backends = [...new Set(combos.map((c) => c.backend))].sort();
 
 const hasData = allScenarios.length > 0 && combos.length > 0 && metrics.length > 0;
 const runAtFormatted = runAt ? new Date(runAt).toLocaleString() : "—";
-const summaryParts: string[] = [];
-if (hasData) {
-  summaryParts.push(`Last run: ${runAtFormatted}`);
-  if (frontends.length > 0) summaryParts.push(`Frontends: ${frontends.join(", ")}`);
-  if (frontendVersion) summaryParts.push(`Version: ${frontendVersion}`);
-  if (backends.length > 0) summaryParts.push(`Backends: ${backends.join(", ")}`);
-}
-const summaryText = summaryParts.join(" · ");
+const frontendLabel = frontends.length > 0 && frontendVersion
+  ? `${frontends.join(", ")} v${frontendVersion}`
+  : frontends.length > 0
+    ? frontends.join(", ")
+    : frontendVersion
+      ? `v${frontendVersion}`
+      : null;
+const backendsLabel = backends.length > 0 ? backends.join(", ") : null;
 ---
 
 <Layout title="Hanoi Benchmark Results">
   <main class="main">
-    <p class="summary" aria-live="polite">
-      {hasData ? summaryText : "No benchmark data. Run benchmarks and build the site to see results."}
-    </p>
+    <div class="summary-bar" aria-live="polite" role="status">
+      {hasData ? (
+        <div class="summary-pills">
+          <span class="pill">Last run: {runAtFormatted}</span>
+          {frontendLabel ? <span class="pill">{frontendLabel}</span> : null}
+          {backendsLabel ? <span class="pill">{backendsLabel}</span> : null}
+        </div>
+      ) : (
+        <p class="summary-empty">No benchmark data. Run benchmarks and build the site to see results.</p>
+      )}
+    </div>
 
     {hasData && (animateScenarios.length > 0 || tableScenarios.length > 0) ? (
       <div class="sections">
         {animateScenarios.length > 0 && (
-          <section class="view-section" aria-labelledby="animate-heading">
+          <section class="view-section view-section--animate" aria-labelledby="animate-heading">
             <h2 id="animate-heading" class="view-title">
               <span class="view-icon" aria-hidden="true">▶</span>
               {VIEW_LABELS.animate}
@@ -114,7 +122,7 @@ const summaryText = summaryParts.join(" · ");
                     metricKey={metricKey}
                     metricLabel={metricLabel}
                   />
-                  <p class="section-subtitle">mean ± half-range (relative to best in column)</p>
+                  <p class="section-subtitle">Values: mean ms ± spread. Parentheses = relative to best (1.00× = tied for best, lower is better).</p>
                   <BenchResultsTable client:load scenarioIds={scenarioIds} rows={rows} metricKey={metricKey} />
                 </div>
               );
@@ -123,7 +131,7 @@ const summaryText = summaryParts.join(" · ");
         )}
 
         {tableScenarios.length > 0 && (
-          <section class="view-section" aria-labelledby="table-heading">
+          <section class="view-section view-section--table" aria-labelledby="table-heading">
             <h2 id="table-heading" class="view-title">
               <span class="view-icon" aria-hidden="true">⊞</span>
               {VIEW_LABELS.table}
@@ -151,7 +159,7 @@ const summaryText = summaryParts.join(" · ");
                     metricKey={metricKey}
                     metricLabel={metricLabel}
                   />
-                  <p class="section-subtitle">mean ± half-range (relative to best in column)</p>
+                  <p class="section-subtitle">Values: mean ms ± spread. Parentheses = relative to best (1.00× = tied for best, lower is better).</p>
                   <BenchResultsTable client:load scenarioIds={scenarioIds} rows={rows} metricKey={metricKey} />
                 </div>
               );
@@ -163,28 +171,45 @@ const summaryText = summaryParts.join(" · ");
   </main>
   <style>
     .main {
-      max-width: 64rem;
+      max-width: 72rem;
       margin: 0 auto;
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
     }
-    .summary {
-      color: var(--muted);
+    .summary-bar {
       margin: 0 0 1.5rem;
+    }
+    .summary-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .summary-pills .pill {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .summary-empty {
+      margin: 0;
       font-size: 0.9375rem;
+      color: var(--muted);
     }
     .sections {
       display: flex;
       flex-direction: column;
-      gap: 2.5rem;
+      gap: 3rem;
     }
     .view-section {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.25rem;
     }
     .view-title {
       margin: 0;
-      font-size: 1.375rem;
+      font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       display: flex;
@@ -196,30 +221,41 @@ const summaryText = summaryParts.join(" · ");
       opacity: 0.8;
     }
     .view-desc {
-      margin: 0 0 0.5rem;
+      margin: 0 0 0.25rem;
       font-size: 0.875rem;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.55;
       max-width: 48rem;
+    }
+    .view-section--animate .card {
+      border-left: 3px solid var(--link);
+    }
+    .view-section--table .card {
+      border-left: 3px solid var(--muted);
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 1.5rem;
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    html.dark .card {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     .metric-title {
-      margin: 0 0 1rem;
-      font-size: 1rem;
+      margin: 0 0 1.25rem;
+      font-size: 0.9375rem;
       font-weight: 600;
+      color: var(--text);
     }
     .section-subtitle {
-      margin: 0 0 0.75rem;
+      margin: 0 0 1rem;
       font-size: 0.8125rem;
       color: var(--muted);
     }
     .chart-wrap {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
     .table-wrap {
       overflow-x: auto;
