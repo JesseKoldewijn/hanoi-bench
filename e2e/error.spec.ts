@@ -12,7 +12,9 @@ test.describe("error handling", () => {
   });
 
   test("shows error when backend request fails", async ({ page }) => {
-    await page.route("**/hanoi?*", (route) => route.abort("connectionfailed"));
+    await page.route("**/hanoi?*", (route) =>
+      route.abort("connectionfailed")
+    );
     await page.goto("/?n=5&view=table&backend=go");
 
     await expect(page.getByText(/Error:/)).toBeVisible({ timeout: 10_000 });

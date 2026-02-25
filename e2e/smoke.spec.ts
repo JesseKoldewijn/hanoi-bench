@@ -6,7 +6,9 @@ test.describe("smoke", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Hanoi Benchmark" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Hanoi Benchmark" })
+    ).toBeVisible();
     await expect(page.getByText(/Disks:/)).toBeVisible();
     await expect(page.getByText(/Backend:/)).toBeVisible();
     await expect(page.getByText(/View:/)).toBeVisible();

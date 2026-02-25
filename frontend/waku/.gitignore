@@ -5,3 +5,4 @@ dist/
 .env.*
 !.env.example
 e2e/results/
+test-results

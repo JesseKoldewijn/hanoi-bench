@@ -2,19 +2,25 @@
 
 Fullstack benchmark: Tower of Hanoi algorithm streamed over HTTP GET. Backend and frontend run on separate ports.
 
-## Frontend (Waku + React + Tailwind 4 + shadcn)
+## Getting started
 
-Port **3000**. Table view (steps) and animated Tower of Hanoi with query-param configurable speed. Multi-theme (CSS variables) with a theme toggle (top-right).
-
-### Run
+From the project root (requires [Yarn](https://yarnpkg.com/)):
 
 ```bash
-cd frontend/waku
 yarn install
 yarn dev
 ```
 
-Open http://localhost:3000. Ensure backends are running (Rust 6001, Go 6002) for table/animation data.
+This installs all workspaces and runs the frontend dev server. Open http://localhost:3000. Ensure backends are running (Rust 6001, Go 6002) for table/animation data.
+
+- **Build**: `yarn build` — builds frontend and results-site
+- **Filtered builds**: `yarn build:frontend`, `yarn build:results-site`
+
+---
+
+## Frontend (Waku + React + Tailwind 4 + shadcn)
+
+Port **3000**. Table view (steps) and animated Tower of Hanoi with query-param configurable speed. Multi-theme (CSS variables) with a theme toggle (top-right).
 
 ### Query params
 
@@ -97,7 +103,7 @@ The workflow **Benchmark and build results site** (`.github/workflows/benchmark-
 
 ### Dry-run (for local testing with act)
 
-When triggered manually, you can pass **dry_run: true** to skip Docker, the benchmark, and artifact upload. Only checkout, Volta, results-site install, and Astro build run—useful to validate the workflow with [act](https://github.com/nektos/act) without starting the full stack.
+When triggered manually, you can pass **dry_run: true** to skip Docker, the benchmark, and artifact upload. Only checkout, Volta, root install, and results-site build run—useful to validate the workflow with [act](https://github.com/nektos/act) without starting the full stack.
 
 ```bash
 # Requires act and Docker

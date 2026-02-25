@@ -1,126 +1,71 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { BenchmarkAreaChart } from "../components/BenchmarkAreaChart";
+import { BenchResultsTable } from "../components/BenchResultsTable";
+import { METRIC_LABELS, getCombosFromStats } from "../utils/benchData";
+import type { Stats } from "../utils/benchData";
 import fs from "node:fs";
 import path from "node:path";
 
-const METRIC_LABELS: Record<string, string> = {
-  timeToStreamCompleteMs: "Time to stream complete (ms)",
-  navigationTimingMs: "Navigation timing (ms)",
-};
-
-type MetricStats = { mean: number; min: number; max: number; sampleCount: number };
-type Stats = Record<string, Record<string, Record<string, MetricStats>>>;
-
 function loadData(): {
   runAt: string | null;
-  frontend: string | null;
-  frontendVersion: string | null;
+  frontends: string[];
   stats: Stats;
 } {
   const jsonPath = path.join(process.cwd(), "public", "benchmark-results.json");
   if (!fs.existsSync(jsonPath)) {
-    return { runAt: null, frontend: null, frontendVersion: null, stats: {} };
+    return { runAt: null, frontends: [], stats: {} };
   }
   const raw = fs.readFileSync(jsonPath, "utf8");
   try {
     const data = JSON.parse(raw) as {
       runAt?: string;
+      frontends?: string[];
       frontend?: string;
-      frontendVersion?: string;
       stats?: Stats;
     };
+    const frontends = data.frontends ?? (data.frontend ? [data.frontend] : []);
     return {
       runAt: data.runAt ?? null,
-      frontend: data.frontend ?? null,
-      frontendVersion: data.frontendVersion ?? null,
+      frontends: Array.isArray(frontends) ? frontends : [],
       stats: data.stats ?? {},
     };
   } catch {
-    return { runAt: null, frontend: null, frontendVersion: null, stats: {} };
+    return { runAt: null, frontends: [], stats: {} };
   }
 }
 
-const { runAt, frontend, frontendVersion, stats } = loadData();
+const { runAt, frontends, stats } = loadData();
 
 const scenarios = Object.keys(stats).sort();
-const allBackends = new Set<string>();
+const combos = getCombosFromStats(stats);
 const metricKeys = new Set<string>();
 for (const scenario of scenarios) {
   const byBackend = stats[scenario] ?? {};
-  for (const backend of Object.keys(byBackend)) allBackends.add(backend);
   for (const backend of Object.keys(byBackend)) {
-    for (const key of Object.keys(byBackend[backend] ?? {})) metricKeys.add(key);
-  }
-}
-const backends = Array.from(allBackends).sort();
-const metrics = Array.from(metricKeys);
-
-function formatNum(n: number): string {
-  return Number.isInteger(n) ? String(n) : n.toFixed(2);
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-type CellData = { mean: number; spread: number; relative: number; label: string };
-
-function buildTableForMetric(metricKey: string): {
-  scenarioIds: string[];
-  rows: { backend: string; mean: number; cells: CellData[] }[];
-} {
-  const scenarioIds = scenarios.filter((s) => {
-    for (const b of backends) {
-      if ((stats[s]?.[b]?.[metricKey]) != null) return true;
-    }
-    return false;
-  });
-  const rows: { backend: string; mean: number; cells: CellData[] }[] = [];
-  for (const backend of backends) {
-    const cells: CellData[] = [];
-    let sumMean = 0;
-    let countMean = 0;
-    for (const scenario of scenarioIds) {
-      const s = stats[scenario]?.[backend]?.[metricKey];
-      if (!s) {
-        cells.push({ mean: 0, spread: 0, relative: 0, label: "—" });
-        continue;
+    const byThird = byBackend[backend] as Record<string, unknown>;
+    if (!byThird || typeof byThird !== "object") continue;
+    for (const k of Object.keys(byThird)) {
+      const v = byThird[k] as any;
+      if (v?.mean != null) {
+        metricKeys.add(k);
+      } else if (v && typeof v === "object") {
+        for (const mk of Object.keys(v)) {
+          if (v[mk]?.mean != null) metricKeys.add(mk);
+        }
       }
-      const spread = s.sampleCount > 1 ? (s.max - s.min) / 2 : 0;
-      sumMean += s.mean;
-      countMean += 1;
-      cells.push({ mean: s.mean, spread, relative: 0, label: "" });
-    }
-    const overallMean = countMean ? sumMean / countMean : 0;
-    rows.push({ backend, mean: Math.round(overallMean * 100) / 100, cells });
-  }
-  for (let col = 0; col < scenarioIds.length; col++) {
-    const values = rows.map((r) => r.cells[col].mean).filter((v) => v > 0);
-    const best = values.length ? Math.min(...values) : 0;
-    for (const row of rows) {
-      const c = row.cells[col];
-      if (c.mean <= 0) {
-        c.label = "—";
-        continue;
-      }
-      const relative = best > 0 ? Math.round((c.mean / best) * 100) / 100 : 1;
-      c.relative = relative;
-      const spreadStr = c.spread > 0 ? ` ± ${formatNum(c.spread)}` : "";
-      c.label = `${formatNum(c.mean)}${spreadStr} (${relative.toFixed(2)})`;
     }
   }
-  return { scenarioIds, rows };
 }
+const metrics = Array.from(metricKeys).filter(
+  (m) => m === "timeToStreamCompleteMs" || m === "navigationTimingMs"
+);
 
-const hasData = scenarios.length > 0 && backends.length > 0 && metrics.length > 0;
+const hasData = scenarios.length > 0 && combos.length > 0 && metrics.length > 0;
 const runAtFormatted = runAt ? new Date(runAt).toLocaleString() : "—";
 const summaryText =
   hasData &&
-  `Last run: ${runAtFormatted} · Frontend: ${frontend ?? "—"} ${frontendVersion ?? ""}`.trim();
+  `Last run: ${runAtFormatted} · Frontends: ${frontends.length ? frontends.join(", ") : "—"}`.trim();
 ---
 
 <Layout title="Hanoi Benchmark Results">
@@ -130,53 +75,29 @@ const summaryText =
     </p>
     {hasData && metrics.length > 0 ? (
       metrics.map((metricKey) => {
-        const { scenarioIds, rows } = buildTableForMetric(metricKey);
         const metricLabel = METRIC_LABELS[metricKey] ?? metricKey;
         return (
           <section class="card" aria-labelledby={`metric-${metricKey}`}>
             <h2 id={`metric-${metricKey}`} class="section-title">
               {metricLabel}
             </h2>
+            <BenchmarkAreaChart
+              client:load
+              stats={stats}
+              metricKey={metricKey}
+              metricLabel={metricLabel}
+              scenarios={scenarios}
+              combos={combos}
+            />
             <p class="section-subtitle">mean ± half-range (relative to best in column)</p>
-            <div class="table-wrap">
-              <table class="bench-table" data-metric={metricKey}>
-                <thead>
-                  <tr>
-                    <th scope="col">Backend</th>
-                    <th scope="col" class="sortable" data-sort="mean">
-                      mean<span class="sort-icon" aria-hidden="true">▲</span>
-                    </th>
-                    {scenarioIds.map((s) => (
-                      <th scope="col" class="sortable" data-sort={s}>
-                        {escapeHtml(s)}<span class="sort-icon" aria-hidden="true">↕</span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row) => (
-                    <tr
-                      data-mean={row.mean}
-                      data-backend={escapeHtml(row.backend)}
-                    >
-                      <th scope="row">{escapeHtml(row.backend)}</th>
-                      <td class="num" data-value={row.mean}>
-                        {formatNum(row.mean)}
-                      </td>
-                      {row.cells.map((c, i) => (
-                        <td
-                          class="num"
-                          data-value={c.mean || undefined}
-                          data-relative={c.relative || undefined}
-                        >
-                          {c.label}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <BenchResultsTable
+              client:load
+              stats={stats}
+              metricKey={metricKey}
+              metricLabel={metricLabel}
+              scenarios={scenarios}
+              combos={combos}
+            />
           </section>
         );
       })
@@ -209,6 +130,10 @@ const summaryText =
       margin: 0 0 1rem;
       font-size: 0.8125rem;
       color: var(--muted);
+    }
+    .chart-wrap {
+      margin-bottom: 1.5rem;
+      width: 100%;
     }
     .table-wrap {
       overflow-x: auto;
@@ -250,28 +175,4 @@ const summaryText =
       opacity: 0.7;
     }
   </style>
-  <script>
-    document.querySelectorAll(".bench-table").forEach((table) => {
-      const thead = table.querySelector("thead tr");
-      const tbody = table.querySelector("tbody");
-      if (!thead || !tbody) return;
-      const headers = thead.querySelectorAll("th.sortable");
-      headers.forEach((th, colIndex) => {
-        if (!th.classList.contains("sortable")) return;
-        th.addEventListener("click", () => {
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          const tdIndex = colIndex - 1;
-          rows.sort((a, b) => {
-            const cellA = a.querySelectorAll("td")[tdIndex];
-            const cellB = b.querySelectorAll("td")[tdIndex];
-            if (!cellA || !cellB) return 0;
-            const valA = Number(cellA.getAttribute("data-value")) ?? 0;
-            const valB = Number(cellB.getAttribute("data-value")) ?? 0;
-            return valA - valB;
-          });
-          rows.forEach((r) => tbody.appendChild(r));
-        });
-      });
-    });
-  </script>
 </Layout>

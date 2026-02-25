@@ -16,7 +16,7 @@ RUN curl https://get.volta.sh | bash \
 
 # Copy workspace root and packages
 COPY package.json yarn.lock ./
-COPY frontend/waku frontend/waku
+COPY frontend/tanstack-solid frontend/tanstack-solid
 COPY results-site results-site
 RUN yarn install --frozen-lockfile
 
@@ -24,9 +24,9 @@ ARG VITE_BACKEND_RUST=http://localhost:6001
 ARG VITE_BACKEND_GO=http://localhost:6002
 ENV VITE_BACKEND_RUST=$VITE_BACKEND_RUST
 ENV VITE_BACKEND_GO=$VITE_BACKEND_GO
-RUN yarn workspace frontend_waku build
+RUN yarn workspace hanoi-bench-frontend-tanstack-solid build
 
-# Runtime stage: copy Volta from builder (no curl/network in runtime; matches Volta setup action)
+# Runtime stage
 FROM debian:bookworm-slim
 WORKDIR /app
 
@@ -40,16 +40,15 @@ ENV VOLTA_HOME=/root/.volta
 ENV PATH=$VOLTA_HOME/bin:$PATH
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3001
 
-# Production server needs deps (e.g. Hono) at runtime
 COPY package.json yarn.lock ./
-COPY frontend/waku/package.json frontend/waku/
+COPY frontend/tanstack-solid/package.json frontend/tanstack-solid/
 COPY results-site/package.json results-site/
 RUN yarn install --frozen-lockfile
 
-COPY --from=builder /app/frontend/waku/dist ./dist
+COPY --from=builder /app/frontend/tanstack-solid/.output ./frontend/tanstack-solid/.output
 
 EXPOSE ${PORT}
-# Standalone entry; do not use "waku start" in Docker (see waku.gg/guides/docker)
-CMD ["node", "dist/serve-node.js"]
+WORKDIR /app/frontend/tanstack-solid
+CMD ["node", ".output/server/index.mjs"]

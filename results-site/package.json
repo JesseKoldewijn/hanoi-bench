@@ -4,15 +4,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "preinstall": "node -e \"const u=process.env.npm_config_user_agent||'';if(!u.includes('yarn/')){console.error('\\nUse yarn instead of npm.\\n');process.exit(1)}\"",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.16.0"
+    "@astrojs/react": "^4.0.0",
+    "@tanstack/react-table": "^8.20.0",
+    "ag-charts-community": "^10.0.0",
+    "ag-charts-react": "^10.0.0",
+    "astro": "^4.16.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0"
   }
 }

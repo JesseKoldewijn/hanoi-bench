@@ -22,10 +22,20 @@ services:
 
   frontend_waku:
     build:
-      context: ./frontend/waku
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/waku/Dockerfile
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
+    restart: unless-stopped
+
+  frontend_tanstack_solid:
+    build:
+      context: .
+      dockerfile: frontend/tanstack-solid/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
     restart: unless-stopped

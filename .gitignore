@@ -26,3 +26,6 @@ Thumbs.db
 
 # Docker
 .docker/
+
+# E2E benchmark results (generated)
+e2e/results/

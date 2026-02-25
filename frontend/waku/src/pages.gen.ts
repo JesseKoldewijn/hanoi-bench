@@ -1,7 +1,7 @@
 // deno-fmt-ignore-file
 // biome-ignore format: generated types do not need formatting
 // prettier-ignore
-import type { GetConfigResponse, PathsForPages } from 'waku/router';
+import type { PathsForPages, GetConfigResponse } from 'waku/router';
 
 // prettier-ignore
 import type { getConfig as File_Index_getConfig } from './pages/index';

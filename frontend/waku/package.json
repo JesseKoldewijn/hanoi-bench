@@ -1,8 +1,8 @@
 {
-  "name": "hanoi-bench-frontend",
+  "name": "frontend_waku",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "waku dev",
     "build": "waku build",
@@ -11,9 +11,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:benchmark": "PLAYWRIGHT_BENCHMARK=1 playwright test && node e2e/scripts/aggregate-benchmark-results.mjs"
+    "preinstall": "node -e \"const u=process.env.npm_config_user_agent||'';if(!u.includes('yarn/')){console.error('\\nUse yarn instead of npm.\\n');process.exit(1)}\""
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -28,7 +26,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
-    "@tailwindcss/vite": "^4.1.18",
+    "@tailwindcss/vite": "0.0.0-insiders.ffb1d72",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.3.0",
     "@types/react": "^19.2.14",
@@ -42,7 +40,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "prettier": "^3.8.1",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "0.0.0-insiders.ffb1d72",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1"
   },

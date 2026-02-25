@@ -1,0 +1,30 @@
+{
+	"name": "hanoi-bench",
+	"private": true,
+	"workspaces": [
+		"frontend/*",
+		"results-site"
+	],
+	"scripts": {
+		"preinstall": "node -e \"const u=process.env.npm_config_user_agent||'';if(!u.includes('yarn/')){console.error('\\nUse yarn instead of npm.\\n');process.exit(1)}\"",
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"lint": "turbo lint",
+		"build:frontend": "turbo build --filter=hanoi-bench-frontend",
+		"build:results-site": "turbo build --filter=hanoi-bench-results-site",
+		"test:e2e": "playwright test",
+		"test:e2e:benchmark": "PLAYWRIGHT_BENCHMARK=1 playwright test && node e2e/scripts/aggregate-benchmark-results.mjs"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.58.2",
+		"turbo": "^2.3.0"
+	},
+	"packageManager": "yarn@1.22.22",
+	"engines": {
+		"node": ">=22.0.0"
+	},
+	"volta": {
+		"node": "22.13.0",
+		"yarn": "1.22.22"
+	}
+}
