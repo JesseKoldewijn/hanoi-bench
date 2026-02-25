@@ -202,6 +202,20 @@ export function getScenariosFromStats(stats: Record<string, unknown>): string[] 
   return Object.keys(stats).sort();
 }
 
+export type ViewType = "animate" | "table";
+
+/** Filter scenarios by view type (animate-* vs table-*) */
+export function filterScenariosByView(scenarios: string[], view: ViewType): string[] {
+  const prefix = view === "animate" ? "animate-" : "table-";
+  return scenarios.filter((s) => s.startsWith(prefix)).sort();
+}
+
+/** Human-readable scenario label (e.g. animate-n3 → n=3) */
+export function scenarioLabel(scenarioId: string): string {
+  const match = scenarioId.match(/^(?:animate|table)-n(\d+)$/);
+  return match ? `n=${match[1]}` : scenarioId;
+}
+
 export function getMetricsFromStats(stats: Record<string, unknown>): string[] {
   const keys = new Set<string>();
   for (const scenario of Object.keys(stats)) {

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { AgCharts } from "ag-charts-react";
 import type { ChartDataPoint } from "../utils/benchData";
-import { comboLabel } from "../utils/benchData";
+import { comboLabel, scenarioLabel } from "../utils/benchData";
 import type { Combo } from "../utils/benchData";
 
 function getIsDark(): boolean {
@@ -29,7 +29,6 @@ export default function BenchmarkAreaChart({ data, combos, metricKey, metricLabe
   const options = useMemo(
     () => ({
       theme: isDark ? ("ag-default-dark" as const) : ("ag-default" as const),
-      title: { text: metricLabel },
       data,
       series: combos.map((c) => ({
         type: "area" as const,
@@ -39,7 +38,13 @@ export default function BenchmarkAreaChart({ data, combos, metricKey, metricLabe
         fillOpacity: 0.6,
       })),
       axes: [
-        { type: "category", position: "bottom" as const },
+        {
+          type: "category",
+          position: "bottom" as const,
+          label: {
+            formatter: ({ value }: { value: string }) => scenarioLabel(String(value)),
+          },
+        },
         { type: "number", position: "left" as const },
       ],
       legend: { enabled: true },

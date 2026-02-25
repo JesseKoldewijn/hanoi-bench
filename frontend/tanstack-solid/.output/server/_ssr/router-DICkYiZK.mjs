@@ -1,14 +1,16 @@
-import { s as ssr, i as escape, c as createComponent, d as Suspense, H as HydrationScript, N as NoHydration, g as ssrHydrationKey, F as For, m as mergeProps, b as createMemo, f as createResource, D as Dynamic, u as useContext, n as splitProps, p as ssrElement, q as useAssets, a as createContext, t as createUniqueId, k as createSignal, v as createRenderEffect, w as onCleanup } from "../_libs/solid-js.mjs";
-import { R as RouterCore, B as BaseRootRoute, h as escapeHtml, v as isModuleNotFoundError, w as isDangerousProtocol, x as exactPathTest, y as removeTrailingSlash, z as deepEqual, A as BaseRoute, C as isServer, D as functionalUpdate, E as preloadWarning } from "../_libs/tanstack__router-core.mjs";
-import { m as mergeRefs } from "../_libs/solid-primitives__refs.mjs";
-import { O as Outlet, u as useRouter, a as useRouterState, d as dummyMatchContext, m as matchContext, b as useIntersectionObserver } from "./index.mjs";
+import { s as ssr, g as ssrHydrationKey, i as escape, k as createSignal, c as createComponent, m as mergeProps, u as useContext, b as createMemo, n as splitProps, p as ssrElement, D as Dynamic, f as createResource, d as Suspense, H as HydrationScript, N as NoHydration, F as For, l as ssrAttribute, q as useAssets, a as createContext, t as createUniqueId, v as createRenderEffect, w as onCleanup } from "../_libs/solid-js.mjs";
+import { c as clsx } from "../_libs/clsx.mjs";
+import { t as twMerge } from "../_libs/tailwind-merge.mjs";
+import { R as RouterCore, B as BaseRootRoute, v as isModuleNotFoundError, w as isDangerousProtocol, x as exactPathTest, y as removeTrailingSlash, z as deepEqual, A as isServer, C as functionalUpdate, D as BaseRoute, E as preloadWarning, h as escapeHtml } from "../_chunks/_libs/@tanstack/router-core.mjs";
+import { m as mergeRefs } from "../_chunks/_libs/@solid-primitives/refs.mjs";
+import { d as dummyMatchContext, m as matchContext, a as useRouterState, u as useRouter, b as useIntersectionObserver, O as Outlet } from "./index.mjs";
 import "../_libs/seroval.mjs";
 import "../_libs/seroval-plugins.mjs";
 import "../_libs/cookie-es.mjs";
-import "../_libs/tanstack__history.mjs";
+import "../_chunks/_libs/@tanstack/history.mjs";
 import "../_libs/tiny-invariant.mjs";
 import "node:stream/web";
-import "../_libs/solid-primitives__utils.mjs";
+import "../_chunks/_libs/@solid-primitives/utils.mjs";
 import "node:async_hooks";
 import "../_libs/h3-v2.mjs";
 import "../_libs/rou3.mjs";
@@ -23,7 +25,7 @@ function useHydrated() {
   const [hydrated] = createSignal(false);
   return hydrated;
 }
-var _tmpl$$2 = ["<svg", ">", "</svg>"];
+var _tmpl$$5 = ["<svg", ">", "</svg>"];
 const timeoutMap = /* @__PURE__ */ new WeakMap();
 function useLinkProps(options) {
   const router = useRouter();
@@ -280,7 +282,7 @@ const Link$1 = (props) => {
   });
   if (local._asChild === "svg") {
     const [_2, svgLinkProps] = splitProps(linkProps, ["class"]);
-    return ssr(_tmpl$$2, ssrHydrationKey(), ssrElement("a", svgLinkProps, () => escape(children()), false));
+    return ssr(_tmpl$$5, ssrHydrationKey(), ssrElement("a", svgLinkProps, () => escape(children()), false));
   }
   return createComponent(Dynamic, mergeProps({
     get component() {
@@ -427,11 +429,6 @@ let Route$2 = class Route extends BaseRoute {
 };
 function createRoute(options) {
   return new Route$2(options);
-}
-function createRootRouteWithContext() {
-  return (options) => {
-    return createRootRoute(options);
-  };
 }
 class RootRoute extends BaseRootRoute {
   /**
@@ -966,36 +963,63 @@ const Scripts = () => {
   }
   return allScripts.map((asset, i) => createComponent(Asset, asset));
 };
-const TanStackRouterDevtools = function() {
-  return null;
-};
-var _tmpl$$1 = ["<header", ' class="border-b border-[var(--border)] bg-[var(--background)]"><div class="container mx-auto flex h-14 items-center justify-between px-4"><h1 class="text-lg font-semibold">Hanoi Benchmark</h1></div></header>'];
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+var _tmpl$$4 = ["<button", ' type="button"', ">", "</button>"], _tmpl$2$2 = ["<span", ' aria-hidden="true">Sun</span>'], _tmpl$3$1 = ["<span", ' aria-hidden="true">Moon</span>'];
+function ThemeToggle() {
+  const [theme] = createSignal("light");
+  return ssr(_tmpl$$4, ssrHydrationKey(), ssrAttribute("class", escape(cn("inline-flex size-9 items-center justify-center rounded-md", "hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]"), true)) + ssrAttribute("aria-label", theme() === "dark" ? "Switch to light mode" : "Switch to dark mode"), theme() === "dark" ? _tmpl$2$2[0] + ssrHydrationKey() + _tmpl$2$2[1] : _tmpl$3$1[0] + ssrHydrationKey() + _tmpl$3$1[1]);
+}
+var _tmpl$$3 = ["<header", ' class="border-b border-[var(--border)] bg-[var(--background)]"><div class="container mx-auto flex h-14 items-center justify-between px-4"><h1 class="text-lg font-semibold">Hanoi Benchmark</h1><div class="flex items-center justify-end">', "</div></div></header>"];
 function Header() {
+  return ssr(_tmpl$$3, ssrHydrationKey(), escape(createComponent(ThemeToggle, {})));
+}
+var _tmpl$$2 = ["<div", ' style="padding:0.5rem;max-width:100%"><div style="display:flex;align-items:center;gap:0.5rem"><strong style="font-size:1rem">Something went wrong!</strong><button type="button" style="font-size:0.6em;padding:0.1rem 0.2rem">', "</button></div><!--$-->", "<!--/--></div>"], _tmpl$2$1 = ["<pre", ' style="font-size:0.7em;border:1px solid red;padding:0.3rem;color:red">', "</pre>"];
+function DefaultCatchBoundary(props) {
+  const [show] = createSignal(false);
+  return ssr(_tmpl$$2, ssrHydrationKey(), show() ? "Hide Error" : "Show Error", show() && ssr(_tmpl$2$1, ssrHydrationKey(), escape(props.error.message)));
+}
+var _tmpl$$1 = ["<p", ">Not Found</p>"];
+function NotFound() {
   return ssr(_tmpl$$1, ssrHydrationKey());
 }
-const styleCss = "/assets/styles-CSC-bUPC.css";
-var _tmpl$ = ["<head>", "</head>"], _tmpl$2 = ["<html", ">", "<body><!--$-->", "<!--/--><!--$-->", "<!--/--><!--$-->", "<!--/--></body></html>"];
-const Route$1 = createRootRouteWithContext()({
+const appCss = "/assets/app-BryGXPqJ.css";
+var _tmpl$ = ["<head>", "", "</head>"], _tmpl$2 = ["<div", ' class="flex min-h-screen flex-col"><!--$-->', '<!--/--><main class="container mx-auto flex-1 px-4 py-6">', "</main></div>"], _tmpl$3 = ["<html", ' lang="en">', "<body><!--$-->", "<!--/--><!--$-->", "<!--/--></body></html>"], _tmpl$4 = ["<p", ">Loading...</p>"];
+const Route$1 = createRootRoute({
   head: () => ({
+    meta: [{
+      charset: "utf-8"
+    }, {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1"
+    }, {
+      title: "Hanoi Benchmark"
+    }],
     links: [{
       rel: "stylesheet",
-      href: styleCss
+      href: appCss
     }]
   }),
-  shellComponent: RootComponent
+  errorComponent: DefaultCatchBoundary,
+  notFoundComponent: NotFound,
+  shellComponent: RootShell
 });
-function RootComponent() {
-  return ssr(_tmpl$2, ssrHydrationKey(), createComponent(NoHydration, {
+function RootShell() {
+  return ssr(_tmpl$3, ssrHydrationKey(), createComponent(NoHydration, {
     get children() {
-      return ssr(_tmpl$, escape(createComponent(HydrationScript, {})));
+      return ssr(_tmpl$, escape(createComponent(HydrationScript, {})), escape(createComponent(HeadContent, {})));
     }
-  }), escape(createComponent(HeadContent, {})), escape(createComponent(Suspense, {
+  }), escape(createComponent(Suspense, {
+    get fallback() {
+      return ssr(_tmpl$4, ssrHydrationKey());
+    },
     get children() {
-      return [createComponent(Header, {}), createComponent(Outlet, {}), createComponent(TanStackRouterDevtools, {})];
+      return ssr(_tmpl$2, ssrHydrationKey(), escape(createComponent(Header, {})), escape(createComponent(Outlet, {})));
     }
   })), escape(createComponent(Scripts, {})));
 }
-const $$splitComponentImporter = () => import("./index-0RFxsUGF.mjs");
+const $$splitComponentImporter = () => import("./index-D-idgYn4.mjs");
 const Route2 = createFileRoute("/")({
   component: lazyRouteComponent($$splitComponentImporter, "component")
 });
@@ -1011,9 +1035,10 @@ const routeTree = Route$1._addFileChildren(rootRouteChildren)._addFileTypes();
 function getRouter() {
   const router = createRouter({
     routeTree,
-    scrollRestoration: true,
     defaultPreload: "intent",
-    defaultPreloadStaleTime: 0
+    defaultErrorComponent: DefaultCatchBoundary,
+    defaultNotFoundComponent: NotFound,
+    scrollRestoration: true
   });
   return router;
 }

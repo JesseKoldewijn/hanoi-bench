@@ -1,6 +1,6 @@
 globalThis.__nitro_main__ = import.meta.url;
-import { N as NodeResponse, s as serve } from "./_libs/srvx.mjs";
-import { d as defineHandler, H as HTTPError, t as toEventHandler, a as defineLazyEventHandler, b as H3Core } from "./_libs/h3.mjs";
+import { a as NodeResponse, s as serve } from "./_libs/srvx.mjs";
+import { d as defineHandler, H as HTTPError, t as toEventHandler, a as defineLazyEventHandler, b as H3Core, c as toRequest } from "./_libs/h3.mjs";
 import { d as decodePath, w as withLeadingSlash, a as withoutTrailingSlash, j as joinURL } from "./_libs/ufo.mjs";
 import { promises } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -97,61 +97,26 @@ const headers = ((m) => function headersRouteRule(event) {
   }
 });
 const assets = {
-  "/favicon.ico": {
-    "type": "image/vnd.microsoft.icon",
-    "etag": '"f1e-ESBTjHetHyiokkO0tT/irBbMO8Y"',
-    "mtime": "2026-02-25T21:28:12.038Z",
-    "size": 3870,
-    "path": "../public/favicon.ico"
-  },
-  "/logo192.png": {
-    "type": "image/png",
-    "etag": '"14e3-f08taHgqf6/O2oRVTsq5tImHdQA"',
-    "mtime": "2026-02-25T21:28:12.038Z",
-    "size": 5347,
-    "path": "../public/logo192.png"
-  },
-  "/logo512.png": {
-    "type": "image/png",
-    "etag": '"25c0-RpFfnQJpTtSb/HqVNJR2hBA9w/4"',
-    "mtime": "2026-02-25T21:28:12.038Z",
-    "size": 9664,
-    "path": "../public/logo512.png"
-  },
-  "/manifest.json": {
-    "type": "application/json",
-    "etag": '"1f2-Oqn/x1R1hBTtEjA8nFhpBeFJJNg"',
-    "mtime": "2026-02-25T21:28:12.034Z",
-    "size": 498,
-    "path": "../public/manifest.json"
-  },
-  "/robots.txt": {
-    "type": "text/plain; charset=utf-8",
-    "etag": '"43-BEzmj4PuhUNHX+oW9uOnPSihxtU"',
-    "mtime": "2026-02-25T21:28:12.034Z",
-    "size": 67,
-    "path": "../public/robots.txt"
-  },
-  "/assets/styles-CSC-bUPC.css": {
+  "/assets/app-lYXtEKu-.css": {
     "type": "text/css; charset=utf-8",
-    "etag": '"2591-FKZkoeiOrKl9JAmEgdG/zfufPpo"',
-    "mtime": "2026-02-25T21:28:11.574Z",
-    "size": 9617,
-    "path": "../public/assets/styles-CSC-bUPC.css"
+    "etag": '"2301-FqrsfZXO7efOBekOBLQm5U71Fvw"',
+    "mtime": "2026-02-25T22:40:50.681Z",
+    "size": 8961,
+    "path": "../public/assets/app-lYXtEKu-.css"
   },
-  "/assets/main-U7Xn9vsb.js": {
+  "/assets/index-Bic8yFoj.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": '"25b6d-zGmk38UaCEkfRMX6HVjBFfEsgng"',
-    "mtime": "2026-02-25T21:28:11.574Z",
-    "size": 154477,
-    "path": "../public/assets/main-U7Xn9vsb.js"
+    "etag": '"1af6-qu4dYwQGv8mTYQzfRMC1nOvLDvs"',
+    "mtime": "2026-02-25T22:40:50.681Z",
+    "size": 6902,
+    "path": "../public/assets/index-Bic8yFoj.js"
   },
-  "/assets/index-DzMeDoHm.js": {
+  "/assets/main-C90Gd7rK.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": '"1b84-SfZTggfAaTvwXgGBDIu+Uv+n9qs"',
-    "mtime": "2026-02-25T21:28:11.574Z",
-    "size": 7044,
-    "path": "../public/assets/index-DzMeDoHm.js"
+    "etag": '"2ba6d-IQsxJWnRSqPmn6M78zwzv9kOq/c"',
+    "mtime": "2026-02-25T22:40:50.681Z",
+    "size": 178797,
+    "path": "../public/assets/main-C90Gd7rK.js"
   }
 };
 function readAsset(id) {
@@ -176,8 +141,7 @@ function getAsset(id) {
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = {
   gzip: ".gz",
-  br: ".br",
-  zstd: ".zst"
+  br: ".br"
 };
 const _Zay9UA = defineHandler((event) => {
   if (event.req.method && !METHODS.has(event.req.method)) {
@@ -250,7 +214,9 @@ const findRouteRules = /* @__PURE__ */ (() => {
     return r;
   };
 })();
-const _lazy_8VaClZ = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
+const _lazy_8VaClZ = defineLazyEventHandler(() => Promise.resolve().then(function() {
+  return ssrRenderer$1;
+}));
 const findRoute = /* @__PURE__ */ (() => {
   const data = { route: "/**", handler: _lazy_8VaClZ };
   return ((_m, p) => {
@@ -380,8 +346,7 @@ function trapUnhandledErrors() {
   process.on("unhandledRejection", (error) => _captureError(error, "unhandledRejection"));
   process.on("uncaughtException", (error) => _captureError(error, "uncaughtException"));
 }
-const _parsedPort = Number.parseInt(process.env.NITRO_PORT ?? process.env.PORT ?? "");
-const port = Number.isNaN(_parsedPort) ? 3e3 : _parsedPort;
+const port = Number.parseInt(process.env.NITRO_PORT || process.env.PORT || "") || 3e3;
 const host = process.env.NITRO_HOST || process.env.HOST;
 const cert = process.env.NITRO_SSL_CERT;
 const key = process.env.NITRO_SSL_KEY;
@@ -397,6 +362,21 @@ serve({
 });
 trapUnhandledErrors();
 const nodeServer = {};
+function fetchViteEnv(viteEnvName, input, init) {
+  const envs = globalThis.__nitro_vite_envs__ || {};
+  const viteEnv = envs[viteEnvName];
+  if (!viteEnv) {
+    throw HTTPError.status(404);
+  }
+  return Promise.resolve(viteEnv.fetch(toRequest(input, init)));
+}
+function ssrRenderer({ req }) {
+  return fetchViteEnv("ssr", req);
+}
+const ssrRenderer$1 = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  default: ssrRenderer
+});
 export {
   nodeServer as default
 };

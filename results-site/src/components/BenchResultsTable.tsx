@@ -8,6 +8,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import type { TableRow } from "../utils/benchData";
+import { scenarioLabel } from "../utils/benchData";
 
 const columnHelper = createColumnHelper<TableRow>();
 
@@ -15,9 +16,12 @@ type Props = {
   scenarioIds: string[];
   rows: TableRow[];
   metricKey: string;
+  /** Optional custom labels for scenario columns (defaults to scenarioLabel) */
+  scenarioLabels?: Record<string, string>;
 };
 
-export default function BenchResultsTable({ scenarioIds, rows, metricKey }: Props) {
+export default function BenchResultsTable({ scenarioIds, rows, metricKey, scenarioLabels }: Props) {
+  const getScenarioLabel = (sid: string) => scenarioLabels?.[sid] ?? scenarioLabel(sid);
   const [sorting, setSorting] = useState<SortingState>([{ id: "mean", desc: false }]);
 
   const columns = [
@@ -36,7 +40,7 @@ export default function BenchResultsTable({ scenarioIds, rows, metricKey }: Prop
       const idx = scenarioIds.indexOf(sid);
       return columnHelper.accessor((row) => row.cells[idx]?.mean ?? 0, {
         id: sid,
-        header: sid,
+        header: getScenarioLabel(sid),
         cell: ({ row }) => {
           const cell = row.original.cells[idx];
           return cell ? cell.label : "—";

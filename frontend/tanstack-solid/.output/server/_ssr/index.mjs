@@ -1,5 +1,5 @@
-import { c as createMemoryHistory } from "../_libs/tanstack__history.mjs";
-import { r as rootRouteId, i as isNotFound, g as getNormalizedURL, a as getOrigin, b as attachRouterServerSsrUtils, d as defineHandlerCallback, c as isRedirect, e as defaultGetScrollRestorationKey, f as restoreScroll, h as escapeHtml, s as storageKey, j as createSerializationAdapter, k as createRawStreamRPCPlugin, l as isResolvedRedirect, m as mergeHeaders, n as executeRewriteInput, o as defaultSerovalPlugins, p as makeSerovalPlugin, q as getLocationChangeInfo, t as makeSsrSerovalPlugin, u as transformReadableStreamWithRouter } from "../_libs/tanstack__router-core.mjs";
+import { c as createMemoryHistory } from "../_chunks/_libs/@tanstack/history.mjs";
+import { r as rootRouteId, i as isNotFound, g as getNormalizedURL, a as getOrigin, b as attachRouterServerSsrUtils, d as defineHandlerCallback, c as isRedirect, e as defaultGetScrollRestorationKey, f as restoreScroll, h as escapeHtml, s as storageKey, j as createSerializationAdapter, k as createRawStreamRPCPlugin, l as isResolvedRedirect, m as mergeHeaders, n as executeRewriteInput, o as defaultSerovalPlugins, p as makeSerovalPlugin, q as getLocationChangeInfo, t as makeSsrSerovalPlugin, u as transformReadableStreamWithRouter } from "../_chunks/_libs/@tanstack/router-core.mjs";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { H as H3Event, t as toResponse } from "../_libs/h3-v2.mjs";
 import { i as invariant } from "../_libs/tiny-invariant.mjs";
@@ -786,7 +786,7 @@ function getResponse() {
   return event.res;
 }
 async function getStartManifest(matchedRoutes) {
-  const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-Ykr5pOMY.mjs");
+  const { tsrStartManifest } = await import("./_tanstack-start-manifest_v-DR7uWSuY.mjs");
   const startManifest = tsrStartManifest();
   const rootRoute = startManifest.routes[rootRouteId] = startManifest.routes[rootRouteId] || {};
   rootRoute.assets = rootRoute.assets || [];
@@ -1355,7 +1355,7 @@ let entriesPromise;
 let baseManifestPromise;
 let cachedFinalManifestPromise;
 async function loadEntries() {
-  const routerEntry = await import("./router-PIQq-s-a.mjs");
+  const routerEntry = await import("./router-DICkYiZK.mjs");
   const startEntry = await import("./start-HYkvq4Ni.mjs");
   return { startEntry, routerEntry };
 }
