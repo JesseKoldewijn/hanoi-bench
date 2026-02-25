@@ -3,10 +3,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const RESULTS_DIR = path.join(__dirname, "results");
-const TIMINGS_FILE = path.join(RESULTS_DIR, "timings.jsonl");
+const DEFAULT_RESULTS_DIR = path.join(__dirname, "results");
+const TIMINGS_PATH = process.env.BENCHMARK_TIMINGS_PATH
+  ? path.resolve(process.env.BENCHMARK_TIMINGS_PATH)
+  : path.join(DEFAULT_RESULTS_DIR, "timings.jsonl");
+const RESULTS_DIR = path.dirname(TIMINGS_PATH);
 
-export const FRONTEND = "waku" as const;
+export const FRONTEND = (process.env.BENCHMARK_FRONTEND ?? "waku") as string;
 
 export type TimingEntry = {
   scenario: string;
@@ -26,7 +29,7 @@ export function writeTiming(entry: TimingEntry): void {
     if (!fs.existsSync(RESULTS_DIR)) {
       fs.mkdirSync(RESULTS_DIR, { recursive: true });
     }
-    fs.appendFileSync(TIMINGS_FILE, JSON.stringify(entry) + "\n");
+    fs.appendFileSync(TIMINGS_PATH, JSON.stringify(entry) + "\n");
   } catch {
     // ignore write errors
   }

@@ -11,6 +11,10 @@ dist/
 build/
 *.local
 
+# Benchmark intermediate files
+e2e/results/*.jsonl
+e2e/results/results.json
+
 # Logs and debug
 *.log
 npm-debug.log*

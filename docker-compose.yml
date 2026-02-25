@@ -29,3 +29,14 @@ services:
     environment:
       - PORT=3000
     restart: unless-stopped
+
+  frontend_tanstack_solid:
+    build:
+      context: ./frontend/tanstack-solid
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - HOST=0.0.0.0
+    restart: unless-stopped

@@ -9,8 +9,12 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "../..");
-const TIMINGS_PATH = path.join(ROOT, "e2e", "results", "timings.jsonl");
-const RESULTS_PATH = path.join(ROOT, "e2e", "results", "results.json");
+const DEFAULT_DIR = path.join(ROOT, "e2e", "results");
+const BENCHMARK_DIR = process.env.BENCHMARK_RESULTS_DIR
+  ? path.resolve(process.cwd(), process.env.BENCHMARK_RESULTS_DIR)
+  : DEFAULT_DIR;
+const TIMINGS_PATH = path.join(BENCHMARK_DIR, "timings.jsonl");
+const RESULTS_PATH = path.join(BENCHMARK_DIR, "results.json");
 const PACKAGE_JSON_PATH = path.join(ROOT, "package.json");
 
 const METRIC_KEYS = ["timeToStreamCompleteMs", "navigationTimingMs"];
@@ -45,18 +49,20 @@ function toResult(entry) {
 }
 
 function computeStats(entries) {
-  const byScenarioBackend = new Map();
+  const byScenarioBackendFrontend = new Map();
   for (const entry of entries) {
-    const k = `${entry.scenario}\0${entry.backend}`;
-    if (!byScenarioBackend.has(k)) byScenarioBackend.set(k, []);
-    byScenarioBackend.get(k).push(entry);
+    const frontend = entry.frontend ?? "waku";
+    const k = `${entry.scenario}\0${entry.backend}\0${frontend}`;
+    if (!byScenarioBackendFrontend.has(k)) byScenarioBackendFrontend.set(k, []);
+    byScenarioBackendFrontend.get(k).push(entry);
   }
 
   const stats = {};
-  for (const [key, list] of byScenarioBackend) {
-    const [scenario, backend] = key.split("\0");
+  for (const [key, list] of byScenarioBackendFrontend) {
+    const [scenario, backend, frontend] = key.split("\0");
     if (!stats[scenario]) stats[scenario] = {};
-    stats[scenario][backend] = {};
+    if (!stats[scenario][backend]) stats[scenario][backend] = {};
+    stats[scenario][backend][frontend] = {};
 
     for (const metricKey of METRIC_KEYS) {
       const values = list
@@ -65,7 +71,7 @@ function computeStats(entries) {
       if (values.length === 0) continue;
 
       const sum = values.reduce((a, b) => a + b, 0);
-      stats[scenario][backend][metricKey] = {
+      stats[scenario][backend][frontend][metricKey] = {
         mean: Math.round((sum / values.length) * 100) / 100,
         min: Math.min(...values),
         max: Math.max(...values),
@@ -87,7 +93,8 @@ function main() {
     }
   })();
 
-  const frontend = entries[0]?.frontend ?? "waku";
+  const frontends = [...new Set(entries.map((e) => e.frontend ?? "waku"))];
+  const frontend = frontends.length === 1 ? frontends[0] : frontends.join(", ");
   const results = entries.map(toResult);
   const stats = computeStats(entries);
 

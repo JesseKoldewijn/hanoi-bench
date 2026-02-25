@@ -83,11 +83,12 @@ From the project root:
 docker compose up --build
 ```
 
-- **frontend**: http://localhost:3000
+- **frontend_waku**: http://localhost:3000
+- **frontend_tanstack_solid**: http://localhost:3001
 - **backend_rust**: port 6001
 - **backend_go**: port 6002
 
-Browser at localhost:3000 will call localhost:6001 / localhost:6002 for API (host network).
+Browsers at localhost:3000 and localhost:3001 will call localhost:6001 / localhost:6002 for API (host network).
 
 ---
 

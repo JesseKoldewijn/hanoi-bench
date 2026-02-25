@@ -6,7 +6,7 @@ Static Astro site that renders benchmark results from `public/benchmark-results.
 
 - Ensure `public/benchmark-results.json` exists (a sample is committed for local dev; CI overwrites it with real results).
 - `npm run dev` then open the dev server URL.
-- To use real data, run the benchmark from the repo root (docker compose up, then `cd frontend/waku && yarn test:e2e:benchmark`) and copy `frontend/waku/e2e/results/results.json` to `results-site/public/benchmark-results.json`.
+- To use real data, run `bash scripts/run-all-benchmarks.sh` from the repo root (after `docker compose up`). This benchmarks Waku and TanStack Solid and copies results to `public/benchmark-results.json`.
 
 ## Build
 

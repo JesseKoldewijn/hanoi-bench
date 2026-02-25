@@ -30,11 +30,13 @@ jobs:
         run: |
           docker compose up -d
           echo "Waiting for services..."
-          for i in $(seq 1 45); do
-            code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/ 2>/dev/null || true)
-            [ "$code" = "200" ] && break
-            [ $i -eq 45 ] && echo "Frontend (3000) not ready" && exit 1
-            sleep 2
+          for port in 3000 3001; do
+            for i in $(seq 1 45); do
+              code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:$port/ 2>/dev/null || true)
+              [ "$code" = "200" ] && break
+              [ $i -eq 45 ] && echo "Frontend ($port) not ready" && exit 1
+              sleep 2
+            done
           done
           for port in 6001 6002; do
             for i in $(seq 1 30); do
@@ -56,17 +58,9 @@ jobs:
         working-directory: frontend/waku
         run: npx playwright install chromium --with-deps
 
-      - name: Run benchmark
+      - name: Run benchmarks (Waku + TanStack Solid)
         if: ${{ github.event.inputs.dry_run != 'true' }}
-        working-directory: frontend/waku
-        env:
-          PLAYWRIGHT_BASE_URL: http://localhost:3000
-        run: yarn test:e2e:benchmark
-
-      - name: Copy results to results site
-        if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: |
-          cp frontend/waku/e2e/results/results.json results-site/public/benchmark-results.json
+        run: bash scripts/run-all-benchmarks.sh
 
       - name: Commit and push benchmark results
         if: ${{ github.event.inputs.dry_run != 'true' }}
