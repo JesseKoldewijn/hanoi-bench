@@ -11,12 +11,13 @@ export function HanoiAnimate(props: HanoiAnimateProps) {
   const [loading, setLoading] = createSignal(true);
   const [stepIndex, setStepIndex] = createSignal(0);
   const [rods, setRods] = createSignal<number[][]>([[], [], []]);
-  let mounted = true;
+  const mounted = { current: true };
 
   createEffect(() => {
+    if (import.meta.env.SSR) return;
     const n = props.n;
     const backend = props.backend;
-    mounted = true;
+    mounted.current = true;
     setLoading(true);
     setError(null);
     setMoves([]);
@@ -24,13 +25,12 @@ export function HanoiAnimate(props: HanoiAnimateProps) {
     const initial = Array.from({ length: n }, (_, i) => n - i);
     setRods([initial, [], []]);
     streamHanoiMoves(n, backend).then((res) => {
-      if (!mounted) return;
       setMoves(res.moves);
       setError(res.error);
       setLoading(false);
     });
     onCleanup(() => {
-      mounted = false;
+      mounted.current = false;
     });
   });
 
@@ -40,7 +40,7 @@ export function HanoiAnimate(props: HanoiAnimateProps) {
     if (idx >= moves().length) return;
     const speedMs = props.speedMs;
     const t = setTimeout(() => {
-      if (!mounted) return;
+      if (!mounted.current) return;
       const move = moves()[idx]!;
       setRods((prev) => {
         const next = prev.map((stack) => [...stack]);

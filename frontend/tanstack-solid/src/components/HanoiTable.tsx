@@ -12,6 +12,7 @@ export function HanoiTable(props: HanoiTableProps) {
 	const [loading, setLoading] = createSignal(true);
 
 	createEffect(() => {
+		if (import.meta.env.SSR) return;
 		const n = props.n;
 		const backend = props.backend;
 		setLoading(true);
