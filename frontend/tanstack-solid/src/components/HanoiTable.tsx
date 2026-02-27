@@ -20,12 +20,17 @@ export function HanoiTable(props: HanoiTableProps) {
 		setMoves([]);
 		setTotalMoves(null);
 		const controller = new AbortController();
-		streamHanoiMoves(n, backend, controller.signal).then((res) => {
-			setMoves(res.moves);
-			setTotalMoves(res.totalMoves);
-			setError(res.error);
-			setLoading(false);
-		});
+		streamHanoiMoves(n, backend, controller.signal)
+			.then((res) => {
+				setMoves(res.moves);
+				setTotalMoves(res.totalMoves);
+				setError(res.error);
+				setLoading(false);
+			})
+			.catch((err) => {
+				setError(err instanceof Error ? err.message : String(err));
+				setLoading(false);
+			});
 		onCleanup(() => controller.abort());
 	});
 
@@ -40,8 +45,7 @@ export function HanoiTable(props: HanoiTableProps) {
 			{!loading() && !error() && (
 				<div class="space-y-4">
 					<p class="text-sm text-muted-foreground">
-						Total moves: {totalMoves() ?? moves().length} (2^
-						{props.n} - 1 = {Math.pow(2, props.n) - 1})
+						Total moves: {totalMoves() ?? moves().length} (2^{props.n} − 1 = {Math.pow(2, props.n) - 1})
 					</p>
 					<div class="overflow-hidden rounded-md border border-border">
 						<table class="w-full text-sm">
@@ -60,7 +64,10 @@ export function HanoiTable(props: HanoiTableProps) {
 							</thead>
 							<tbody>
 								{moves().map((move, i) => (
-									<tr class="border-b border-border last:border-0">
+									<tr
+										key={i}
+										class="border-b border-border last:border-0"
+									>
 										<td class="p-3">{i + 1}</td>
 										<td class="p-3">
 											{ROD_LABELS[move.from] ?? move.from}

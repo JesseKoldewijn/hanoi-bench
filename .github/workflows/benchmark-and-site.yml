@@ -36,7 +36,7 @@ jobs:
           echo "Waiting for services..."
           for port in 3000 3001; do
             for i in $(seq 1 45); do
-              code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:$port/ 2>/dev/null || true)
+              code=$(curl -sL -o /dev/null -w "%{http_code}" http://127.0.0.1:$port/ 2>/dev/null || true)
               [ "$code" = "200" ] && break
               [ $i -eq 45 ] && echo "Frontend ($port) not ready" && exit 1
               sleep 2

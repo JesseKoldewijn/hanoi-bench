@@ -18,10 +18,6 @@ COPY .yarn .yarn/
 RUN yarn install --immutable
 
 COPY . .
-ARG VITE_BACKEND_RUST=http://localhost:6001
-ARG VITE_BACKEND_GO=http://localhost:6002
-ENV VITE_BACKEND_RUST=$VITE_BACKEND_RUST
-ENV VITE_BACKEND_GO=$VITE_BACKEND_GO
 RUN yarn run build
 
 # Runtime stage

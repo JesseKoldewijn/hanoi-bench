@@ -10,22 +10,13 @@ export type HanoiParams = {
   view: "table" | "animate";
 };
 
-const DEFAULT_PARAMS: HanoiParams = {
-  n: 5,
-  speed: 400,
-  backend: "rust",
-  view: "table",
-};
-
 type HanoiPageClientProps = {
   params: Accessor<HanoiParams> | HanoiParams;
 };
 
 export function HanoiPageClient(props: HanoiPageClientProps) {
-  const params = (): HanoiParams => {
-    const p = props.params;
-    return (typeof p === "function" ? p() : p) ?? DEFAULT_PARAMS;
-  };
+  const params = () =>
+    typeof props.params === "function" ? props.params() : props.params;
 
   return (
     <div class="space-y-6">
@@ -42,18 +33,15 @@ export function HanoiPageClient(props: HanoiPageClientProps) {
         </span>
       </div>
 
-      <Show
-        when={params().view === "table"}
-        fallback={
-          <HanoiAnimate
-            n={params().n}
-            backend={params().backend}
-            speedMs={params().speed}
-          />
-        }
-      >
+      {params().view === "table" ? (
         <HanoiTable n={params().n} backend={params().backend} />
-      </Show>
+      ) : (
+        <HanoiAnimate
+          n={params().n}
+          backend={params().backend}
+          speedMs={params().speed}
+        />
+      )}
     </div>
   );
 }

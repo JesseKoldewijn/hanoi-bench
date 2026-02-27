@@ -2430,6 +2430,7 @@ __metadata:
     "@tanstack/solid-start": "npm:^1.163.2"
     "@types/node": "npm:^22.0.0"
     clsx: "npm:^2.1.1"
+    lucide-solid: "npm:^0.575.0"
     nitro: "npm:3.0.1-alpha.2"
     solid-js: "npm:^1.9.10"
     tailwind-merge: "npm:^3.5.0"
@@ -2750,6 +2751,15 @@ __metadata:
   dependencies:
     yallist: "npm:^3.0.2"
   checksum: 10c0/89b2ef2ef45f543011e38737b8a8622a2f8998cddf0e5437174ef8f1f70a8b9d14a918ab3e232cb3ba343b7abddffa667f0b59075b2b80e6b4d63c3de6127482
+  languageName: node
+  linkType: hard
+
+"lucide-solid@npm:^0.575.0":
+  version: 0.575.0
+  resolution: "lucide-solid@npm:0.575.0"
+  peerDependencies:
+    solid-js: ^1.4.7
+  checksum: 10c0/e306671557612dd43f34caab93c23d20ca3d656b60ea6d1631011ca04b53c068530a5e9aee125917f166afba479a926b3535889e099a83bb946c3ee50fa2ba78
   languageName: node
   linkType: hard
 

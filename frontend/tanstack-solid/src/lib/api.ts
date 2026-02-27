@@ -6,16 +6,10 @@ export type StreamResult = {
   error: string | null;
 };
 
-// Vite exposes import.meta.env
-const BACKEND_RUST =
-  (import.meta as { env?: Record<string, string> }).env?.VITE_BACKEND_RUST ??
-  "http://localhost:6001";
-const BACKEND_GO =
-  (import.meta as { env?: Record<string, string> }).env?.VITE_BACKEND_GO ??
-  "http://localhost:6002";
+const API_BASE = "/api";
 
-export function getBackendBaseUrl(backend: "rust" | "go"): string {
-  return backend === "go" ? BACKEND_GO : BACKEND_RUST;
+function getApiUrl(n: number, backend: "rust" | "go"): string {
+  return `${API_BASE}/hanoi?n=${encodeURIComponent(n)}&backend=${backend}`;
 }
 
 export async function streamHanoiMoves(
@@ -23,8 +17,7 @@ export async function streamHanoiMoves(
   backend: "rust" | "go",
   signal?: AbortSignal
 ): Promise<StreamResult> {
-  const base = getBackendBaseUrl(backend);
-  const url = `${base}/hanoi?n=${encodeURIComponent(n)}`;
+  const url = getApiUrl(n, backend);
   const moves: Move[] = [];
   let totalMoves: number | null;
 

@@ -1,3 +1,4 @@
+import { Moon, Sun } from "lucide-solid";
 import { createSignal, onMount } from "solid-js";
 import type { Theme } from "~/lib/theme";
 import {
@@ -28,15 +29,15 @@ export function ThemeToggle() {
       type="button"
       class={cn(
         "inline-flex size-9 items-center justify-center rounded-md",
-        "hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]"
+        "hover:bg-accent hover:text-accent-foreground"
       )}
       onClick={toggleTheme}
       aria-label={theme() === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
       {theme() === "dark" ? (
-        <span aria-hidden="true">Sun</span>
+        <Sun class="size-5" aria-hidden />
       ) : (
-        <span aria-hidden="true">Moon</span>
+        <Moon class="size-5" aria-hidden />
       )}
     </button>
   );

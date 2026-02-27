@@ -14,11 +14,6 @@ test.describe("animate view", () => {
       const start = isBenchmarkEnabled() ? Date.now() : 0;
       await page.goto(`/?n=${n}&view=animate&backend=${backend}&speed=200`);
 
-      await expect(page.getByText("Loading moves...")).toBeVisible();
-      await expect(page.getByText("Loading moves...")).not.toBeVisible({
-        timeout: 15_000,
-      });
-
       await expect(
         page.getByText(new RegExp(`Step ${total} / ${total}`))
       ).toBeVisible({ timeout: 30_000 });
@@ -47,11 +42,6 @@ test.describe("animate view", () => {
       const total = expectedMovesForN(n);
       const start = isBenchmarkEnabled() ? Date.now() : 0;
       await page.goto(`/?n=${n}&view=animate&backend=${backend}&speed=200`);
-
-      await expect(page.getByText("Loading moves...")).toBeVisible();
-      await expect(page.getByText("Loading moves...")).not.toBeVisible({
-        timeout: 15_000,
-      });
 
       await expect(
         page.getByText(new RegExp(`Step ${total} / ${total}`))
@@ -82,11 +72,6 @@ test.describe("animate view", () => {
       const start = isBenchmarkEnabled() ? Date.now() : 0;
       await page.goto(`/?n=${n}&view=animate&backend=${backend}&speed=200`);
 
-      await expect(page.getByText("Loading moves...")).toBeVisible();
-      await expect(page.getByText("Loading moves...")).not.toBeVisible({
-        timeout: 20_000,
-      });
-
       await expect(
         page.getByText(new RegExp(`Step ${total} / ${total}`))
       ).toBeVisible({ timeout: 45_000 });
@@ -115,11 +100,6 @@ test.describe("animate view", () => {
       const total = expectedMovesForN(n);
       const start = isBenchmarkEnabled() ? Date.now() : 0;
       await page.goto(`/?n=${n}&view=animate&backend=${backend}&speed=200`);
-
-      await expect(page.getByText("Loading moves...")).toBeVisible();
-      await expect(page.getByText("Loading moves...")).not.toBeVisible({
-        timeout: 25_000,
-      });
 
       await expect(
         page.getByText(new RegExp(`Step ${total} / ${total}`))

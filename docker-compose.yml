@@ -39,4 +39,6 @@ services:
     environment:
       - PORT=3001
       - HOST=0.0.0.0
+      - NITRO_BACKEND_RUST=http://backend_rust:6001
+      - NITRO_BACKEND_GO=http://backend_go:6002
     restart: unless-stopped
