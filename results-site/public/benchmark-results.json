@@ -1,5 +1,5 @@
 {
-  "runAt": "2026-02-27T20:09:53.302Z",
+  "runAt": "2026-02-27T22:00:10.248Z",
   "frontend": "waku, tanstack-solid",
   "frontendVersion": "0.1.0",
   "results": [
@@ -8,7 +8,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 2041
+        "timeToStreamCompleteMs": 1973
       }
     },
     {
@@ -16,7 +16,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 4054
+        "timeToStreamCompleteMs": 3952
       }
     },
     {
@@ -24,7 +24,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 7027
+        "timeToStreamCompleteMs": 6943
       }
     },
     {
@@ -32,7 +32,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 13040
+        "timeToStreamCompleteMs": 12952
       }
     },
     {
@@ -40,7 +40,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 2027
+        "timeToStreamCompleteMs": 1935
       }
     },
     {
@@ -48,7 +48,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 4025
+        "timeToStreamCompleteMs": 3935
       }
     },
     {
@@ -56,7 +56,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 7027
+        "timeToStreamCompleteMs": 6966
       }
     },
     {
@@ -64,7 +64,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 13035
+        "timeToStreamCompleteMs": 12949
       }
     },
     {
@@ -72,7 +72,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 153
+        "timeToStreamCompleteMs": 179
       }
     },
     {
@@ -80,7 +80,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 166
+        "timeToStreamCompleteMs": 192
       }
     },
     {
@@ -88,7 +88,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 157
+        "timeToStreamCompleteMs": 183
       }
     },
     {
@@ -96,7 +96,7 @@
       "backend": "rust",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 266
+        "timeToStreamCompleteMs": 305
       }
     },
     {
@@ -104,7 +104,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 160
+        "timeToStreamCompleteMs": 177
       }
     },
     {
@@ -112,7 +112,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 173
+        "timeToStreamCompleteMs": 188
       }
     },
     {
@@ -120,7 +120,7 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 160
+        "timeToStreamCompleteMs": 184
       }
     },
     {
@@ -128,7 +128,71 @@
       "backend": "go",
       "frontend": "waku",
       "metrics": {
-        "timeToStreamCompleteMs": 267
+        "timeToStreamCompleteMs": 352
+      }
+    },
+    {
+      "scenario": "animate-n3",
+      "backend": "rust",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 1960
+      }
+    },
+    {
+      "scenario": "animate-n4",
+      "backend": "rust",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 3944
+      }
+    },
+    {
+      "scenario": "animate-n5",
+      "backend": "rust",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 6939
+      }
+    },
+    {
+      "scenario": "animate-n6",
+      "backend": "rust",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 12952
+      }
+    },
+    {
+      "scenario": "animate-n3",
+      "backend": "go",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 1940
+      }
+    },
+    {
+      "scenario": "animate-n4",
+      "backend": "go",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 3939
+      }
+    },
+    {
+      "scenario": "animate-n5",
+      "backend": "go",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 6950
+      }
+    },
+    {
+      "scenario": "animate-n6",
+      "backend": "go",
+      "frontend": "tanstack-solid",
+      "metrics": {
+        "timeToStreamCompleteMs": 12953
       }
     },
     {
@@ -136,7 +200,7 @@
       "backend": "rust",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 162
+        "timeToStreamCompleteMs": 77
       }
     },
     {
@@ -144,7 +208,7 @@
       "backend": "rust",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 166
+        "timeToStreamCompleteMs": 191
       }
     },
     {
@@ -152,7 +216,7 @@
       "backend": "rust",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 65
+        "timeToStreamCompleteMs": 88
       }
     },
     {
@@ -160,7 +224,7 @@
       "backend": "rust",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 200
+        "timeToStreamCompleteMs": 281
       }
     },
     {
@@ -168,7 +232,7 @@
       "backend": "go",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 58
+        "timeToStreamCompleteMs": 81
       }
     },
     {
@@ -176,7 +240,7 @@
       "backend": "go",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 93
+        "timeToStreamCompleteMs": 189
       }
     },
     {
@@ -184,7 +248,7 @@
       "backend": "go",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 159
+        "timeToStreamCompleteMs": 87
       }
     },
     {
@@ -192,7 +256,7 @@
       "backend": "go",
       "frontend": "tanstack-solid",
       "metrics": {
-        "timeToStreamCompleteMs": 256
+        "timeToStreamCompleteMs": 322
       }
     }
   ],
@@ -201,9 +265,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 2041,
-            "min": 2041,
-            "max": 2041,
+            "mean": 1973,
+            "min": 1973,
+            "max": 1973,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 1960,
+            "min": 1960,
+            "max": 1960,
             "sampleCount": 1
           }
         }
@@ -211,9 +283,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 2027,
-            "min": 2027,
-            "max": 2027,
+            "mean": 1935,
+            "min": 1935,
+            "max": 1935,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 1940,
+            "min": 1940,
+            "max": 1940,
             "sampleCount": 1
           }
         }
@@ -223,9 +303,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 4054,
-            "min": 4054,
-            "max": 4054,
+            "mean": 3952,
+            "min": 3952,
+            "max": 3952,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 3944,
+            "min": 3944,
+            "max": 3944,
             "sampleCount": 1
           }
         }
@@ -233,9 +321,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 4025,
-            "min": 4025,
-            "max": 4025,
+            "mean": 3935,
+            "min": 3935,
+            "max": 3935,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 3939,
+            "min": 3939,
+            "max": 3939,
             "sampleCount": 1
           }
         }
@@ -245,9 +341,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 7027,
-            "min": 7027,
-            "max": 7027,
+            "mean": 6943,
+            "min": 6943,
+            "max": 6943,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 6939,
+            "min": 6939,
+            "max": 6939,
             "sampleCount": 1
           }
         }
@@ -255,9 +359,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 7027,
-            "min": 7027,
-            "max": 7027,
+            "mean": 6966,
+            "min": 6966,
+            "max": 6966,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 6950,
+            "min": 6950,
+            "max": 6950,
             "sampleCount": 1
           }
         }
@@ -267,9 +379,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 13040,
-            "min": 13040,
-            "max": 13040,
+            "mean": 12952,
+            "min": 12952,
+            "max": 12952,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 12952,
+            "min": 12952,
+            "max": 12952,
             "sampleCount": 1
           }
         }
@@ -277,9 +397,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 13035,
-            "min": 13035,
-            "max": 13035,
+            "mean": 12949,
+            "min": 12949,
+            "max": 12949,
+            "sampleCount": 1
+          }
+        },
+        "tanstack-solid": {
+          "timeToStreamCompleteMs": {
+            "mean": 12953,
+            "min": 12953,
+            "max": 12953,
             "sampleCount": 1
           }
         }
@@ -289,17 +417,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 153,
-            "min": 153,
-            "max": 153,
+            "mean": 179,
+            "min": 179,
+            "max": 179,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 162,
-            "min": 162,
-            "max": 162,
+            "mean": 77,
+            "min": 77,
+            "max": 77,
             "sampleCount": 1
           }
         }
@@ -307,17 +435,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 160,
-            "min": 160,
-            "max": 160,
+            "mean": 177,
+            "min": 177,
+            "max": 177,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 58,
-            "min": 58,
-            "max": 58,
+            "mean": 81,
+            "min": 81,
+            "max": 81,
             "sampleCount": 1
           }
         }
@@ -327,17 +455,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 166,
-            "min": 166,
-            "max": 166,
+            "mean": 192,
+            "min": 192,
+            "max": 192,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 166,
-            "min": 166,
-            "max": 166,
+            "mean": 191,
+            "min": 191,
+            "max": 191,
             "sampleCount": 1
           }
         }
@@ -345,17 +473,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 173,
-            "min": 173,
-            "max": 173,
+            "mean": 188,
+            "min": 188,
+            "max": 188,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 93,
-            "min": 93,
-            "max": 93,
+            "mean": 189,
+            "min": 189,
+            "max": 189,
             "sampleCount": 1
           }
         }
@@ -365,17 +493,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 157,
-            "min": 157,
-            "max": 157,
+            "mean": 183,
+            "min": 183,
+            "max": 183,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 65,
-            "min": 65,
-            "max": 65,
+            "mean": 88,
+            "min": 88,
+            "max": 88,
             "sampleCount": 1
           }
         }
@@ -383,17 +511,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 160,
-            "min": 160,
-            "max": 160,
+            "mean": 184,
+            "min": 184,
+            "max": 184,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 159,
-            "min": 159,
-            "max": 159,
+            "mean": 87,
+            "min": 87,
+            "max": 87,
             "sampleCount": 1
           }
         }
@@ -403,17 +531,17 @@
       "rust": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 266,
-            "min": 266,
-            "max": 266,
+            "mean": 305,
+            "min": 305,
+            "max": 305,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 200,
-            "min": 200,
-            "max": 200,
+            "mean": 281,
+            "min": 281,
+            "max": 281,
             "sampleCount": 1
           }
         }
@@ -421,17 +549,17 @@
       "go": {
         "waku": {
           "timeToStreamCompleteMs": {
-            "mean": 267,
-            "min": 267,
-            "max": 267,
+            "mean": 352,
+            "min": 352,
+            "max": 352,
             "sampleCount": 1
           }
         },
         "tanstack-solid": {
           "timeToStreamCompleteMs": {
-            "mean": 256,
-            "min": 256,
-            "max": 256,
+            "mean": 322,
+            "min": 322,
+            "max": 322,
             "sampleCount": 1
           }
         }
